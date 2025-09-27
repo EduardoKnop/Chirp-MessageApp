@@ -41,5 +41,9 @@ gradlePlugin {
             id = "com.plcoding.convention.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("composeMultiplatformApplication") {
+            id = "com.plcoding.convention.multiplatform.application.compose"
+            implementationClass = "ComposeMultiplatformApplicationConventionPlugin"
+        }
     }
 }

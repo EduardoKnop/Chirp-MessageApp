@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -11,6 +12,7 @@ plugins {
 
 kotlin {
     androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -26,8 +28,6 @@ kotlin {
         }
     }
     
-    jvm()
-    
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -35,8 +35,8 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(projects.core.data)
-            implementation(projects.core.designsystem)
             implementation(projects.core.domain)
+            implementation(projects.core.designsystem)
             implementation(projects.core.presentation)
             
             implementation(projects.feature.auth.domain)
@@ -66,7 +66,7 @@ kotlin {
 android {
     namespace = "com.plcoding.chirp"
     compileSdk = libs.versions.projectCompileSdkVersion.get().toInt()
-
+    
     defaultConfig {
         applicationId = "com.plcoding.chirp"
         minSdk = libs.versions.projectMinSdkVersion.get().toInt()
@@ -97,7 +97,7 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "com.plcoding.chirp.MainKt"
-
+        
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.plcoding.chirp"

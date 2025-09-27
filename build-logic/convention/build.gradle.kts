@@ -23,3 +23,23 @@ kotlin {
         jvmTarget.set(JvmTarget.JVM_17)
     }
 }
+
+tasks {
+    validatePlugins {
+        enableStricterValidation = true
+        failOnWarning = true
+    }
+}
+
+gradlePlugin {
+    plugins {
+        register("androidApplication") {
+            id = "com.plcoding.convention.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidComposeApplication") {
+            id = "com.plcoding.convention.android.application.compose"
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+    }
+}

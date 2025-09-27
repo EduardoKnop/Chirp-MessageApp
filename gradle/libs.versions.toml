@@ -156,6 +156,9 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 
 [plugins]
+# This Application
+convention-android-application = { id = "com.plcoding.convention.android.application", version = "unspecified" }
+convention-android-application-compose = { id = "com.plcoding.convention.android.application.compose", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }

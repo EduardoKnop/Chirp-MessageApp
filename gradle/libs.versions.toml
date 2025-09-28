@@ -3,7 +3,7 @@
 agp = "8.13.0"
 composeBom = "2025.09.01"
 kotlin = "2.2.20"
-ksp = "2.2.0-2.0.2"
+ksp = "2.2.20-2.0.3"
 google-services = "4.4.3"
 
 androidDesugarJdkLibs = "2.1.5"
@@ -174,6 +174,7 @@ convention-kmp-library = { id = "com.plcoding.convention.kmp.library", version =
 convention-compose-multiplatform-library = { id = "com.plcoding.convention.multiplatform.library.compose", version = "unspecified" }
 convention-compose-multiplatform-feature = { id = "com.plcoding.convention.multiplatform.feature.compose", version = "unspecified" }
 convention-buildkonfig= { id = "com.plcoding.convention.buildkonfig", version = "unspecified" }
+convention-room= { id = "com.plcoding.convention.room", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }

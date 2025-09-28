@@ -50,5 +50,13 @@ gradlePlugin {
             id = "com.plcoding.convention.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"
         }
+        register("composeMultiplatformLibrary") {
+            id = "com.plcoding.convention.multiplatform.library.compose"
+            implementationClass = "ComposeMultiplatformLibraryConventionPlugin"
+        }
+        register("composeMultiplatformFeature") {
+            id = "com.plcoding.convention.multiplatform.feature.compose"
+            implementationClass = "ComposeMultiplatformFeatureConventionPlugin"
+        }
     }
 }

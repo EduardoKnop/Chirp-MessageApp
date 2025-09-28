@@ -12,6 +12,8 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    implementation(libs.buildkonfig.gradlePlugin)
+    implementation(libs.buildkonfig.compiler)
 }
 
 java {
@@ -57,6 +59,10 @@ gradlePlugin {
         register("composeMultiplatformFeature") {
             id = "com.plcoding.convention.multiplatform.feature.compose"
             implementationClass = "ComposeMultiplatformFeatureConventionPlugin"
+        }
+        register("buildKonfig") {
+            id = "com.plcoding.convention.buildkonfig"
+            implementationClass = "BuildKonfigConventionPlugin"
         }
     }
 }

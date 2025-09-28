@@ -1,7 +1,7 @@
 package com.plcoding.core.domain.util
 
 sealed interface DataError: Error {
-    enum class Remote {
+    enum class Remote: DataError {
         BAD_REQUEST,
         REQUEST_TIMEOUT,
         UNAUTHORIZED,
@@ -17,7 +17,7 @@ sealed interface DataError: Error {
         UNKNOWN,
     }
     
-    enum class Local {
+    enum class Local: DataError {
         DISK_FULL,
         NOT_FOUND,
         UNKNOWN,

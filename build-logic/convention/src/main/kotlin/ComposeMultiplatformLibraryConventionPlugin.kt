@@ -30,6 +30,11 @@ class ComposeMultiplatformLibraryConventionPlugin: Plugin<Project> {
                     "commonMainImplementation",
                     libs.findLibrary("jetbrains.compose.material.icons.core").get()
                 )
+                
+                add(
+                    "debugImplementation",
+                    libs.findLibrary("androidx.compose.ui.tooling").get()
+                )
             }
         }
     }

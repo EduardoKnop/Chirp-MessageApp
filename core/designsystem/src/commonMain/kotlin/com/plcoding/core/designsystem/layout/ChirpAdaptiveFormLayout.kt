@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsEndWidth
+import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -73,10 +76,9 @@ fun ChirpAdaptiveFormLayout(
         DeviceConfiguration.MOBILE_LANDSCAPE -> {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .consumeWindowInsets(WindowInsets.displayCutout)
+                modifier = Modifier.fillMaxSize()
             ) {
+                Spacer(modifier = Modifier.windowInsetsStartWidth(WindowInsets.displayCutout))
                 Column(
                     modifier = Modifier
                         .weight(1f),
@@ -88,14 +90,19 @@ fun ChirpAdaptiveFormLayout(
                         headerText = headerText,
                         headerColor = headerColor,
                         errorText = errorText,
+                        headerTextAlignment = TextAlign.Start,
                     )
                 }
                 ChirpSurface(
                     modifier = Modifier
                         .weight(1f),
                 ) {
+                    Spacer(modifier = Modifier.height(16.dp))
                     formContent()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 }
+                Spacer(modifier = Modifier.windowInsetsEndWidth(WindowInsets.navigationBars))
             }
         }
         DeviceConfiguration.TABLET_PORTRAIT,
@@ -117,7 +124,6 @@ fun ChirpAdaptiveFormLayout(
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(horizontal = 24.dp, vertical = 32.dp),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     AuthHeaderSection(
@@ -137,12 +143,13 @@ fun ColumnScope.AuthHeaderSection(
     headerText: String,
     headerColor: Color,
     errorText: String? = null,
+    headerTextAlignment: TextAlign = TextAlign.Center,
 ) {
     Text(
         text = headerText,
         style = MaterialTheme.typography.titleLarge,
         color = headerColor,
-        textAlign = TextAlign.Center,
+        textAlign = headerTextAlignment,
         modifier = Modifier.fillMaxWidth(),
     )
     AnimatedVisibility(
@@ -153,9 +160,8 @@ fun ColumnScope.AuthHeaderSection(
                 text = errorText,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.error,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = headerTextAlignment,
             )
         }
     }

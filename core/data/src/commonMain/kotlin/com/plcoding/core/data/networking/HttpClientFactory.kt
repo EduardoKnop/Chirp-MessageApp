@@ -46,7 +46,7 @@ class HttpClientFactory(
                 pingIntervalMillis = 20_000L
             }
             defaultRequest {
-                header("-x-api-key", BuildKonfig.API_KEY)
+                header("x-api-key", BuildKonfig.API_KEY)
                 contentType(ContentType.Application.Json)
             }
         }

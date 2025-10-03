@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import chirp.feature.auth.presentation.generated.resources.Res
@@ -76,7 +77,7 @@ fun RegisterScreen(
                 supportingText = state.usernameError?.asString()
                     ?: stringResource(Res.string.username_hint),
                 isError = state.usernameError != null,
-                onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) }
+                onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) },
             )
             Spacer(modifier = Modifier.height(16.dp))
             ChirpTextField(
@@ -85,7 +86,8 @@ fun RegisterScreen(
                 title = stringResource(Res.string.email),
                 supportingText = state.emailError?.asString(),
                 isError = state.emailError != null,
-                onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) }
+                onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) },
+                keyboardType = KeyboardType.Email,
             )
             Spacer(modifier = Modifier.height(16.dp))
             ChirpPasswordTextField(

@@ -58,17 +58,21 @@ class RegisterViewModel(
     private val isPasswordValidFlow = snapshotFlow { state.value.passwordTextState.text.toString() }
         .map { password -> PasswordValidator.validate(password) }
         .distinctUntilChanged()
+    private val isRegisteringFlow = state
+        .map { it.isRegistering }
+        .distinctUntilChanged()
     
     private fun observeValidationStates() {
         combine(
             isEmailValidFlow,
             isUsernameValidFlow,
             isPasswordValidFlow,
-        ) { isEmailValid, isUsernameValid, passwordValidationState ->
+            isRegisteringFlow,
+        ) { isEmailValid, isUsernameValid, passwordValidationState, isRegistering ->
             val allValid = isEmailValid && isUsernameValid && passwordValidationState.isValidPassword
             _state.update {
                 it.copy(
-                    canRegister = !it.isRegistering && allValid,
+                    canRegister = !isRegistering && allValid,
                 )
             }
         }.launchIn(viewModelScope)
@@ -101,9 +105,9 @@ class RegisterViewModel(
                 )
             }
             
-            val email = _state.value.emailTextState.toString()
-            val username = _state.value.usernameTextState.toString()
-            val password = _state.value.passwordTextState.toString()
+            val email = state.value.emailTextState.text.toString()
+            val username = state.value.usernameTextState.text.toString()
+            val password = state.value.passwordTextState.text.toString()
             
             authService
                 .register(
@@ -137,19 +141,19 @@ class RegisterViewModel(
         clearTextFieldErrors()
         
         val currentState = _state.value
-        val email = currentState.usernameTextState.text.toString()
         val username = currentState.usernameTextState.text.toString()
+        val email = currentState.emailTextState.text.toString()
         val password = currentState.passwordTextState.text.toString()
         
-        val isEmailValid = EmailValidator.validate(email)
         val isUsernameValid = username.length in 3..20
+        val isEmailValid = EmailValidator.validate(email)
         val passwordValidationState = PasswordValidator.validate(password)
         
-        val emailError = if (!isEmailValid) {
-            UiText.Resource(Res.string.error_invalid_email)
-        } else null
         val usernameError = if (!isUsernameValid) {
             UiText.Resource(Res.string.error_invalid_username)
+        } else null
+        val emailError = if (!isEmailValid) {
+            UiText.Resource(Res.string.error_invalid_email)
         } else null
         val passwordError = if (!passwordValidationState.isValidPassword) {
             UiText.Resource(Res.string.error_invalid_password)

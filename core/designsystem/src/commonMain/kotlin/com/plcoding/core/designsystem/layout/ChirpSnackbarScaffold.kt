@@ -22,9 +22,6 @@ fun ChirpSnackbarScaffold(
 ) {
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets.statusBars
-            .union(WindowInsets.displayCutout)
-            .union(WindowInsets.ime),
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,

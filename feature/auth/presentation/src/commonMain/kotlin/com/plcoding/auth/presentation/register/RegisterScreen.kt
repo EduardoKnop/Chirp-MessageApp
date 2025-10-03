@@ -70,7 +70,7 @@ fun RegisterScreen(
                 isError = state.usernameError != null,
                 onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(260.dp))
             ChirpTextField(
                 state = state.emailTextState,
                 placeholder = stringResource(Res.string.email_placeholder),

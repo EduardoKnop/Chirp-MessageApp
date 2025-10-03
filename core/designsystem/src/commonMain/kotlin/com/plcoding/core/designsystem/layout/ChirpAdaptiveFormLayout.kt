@@ -13,12 +13,16 @@ import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsStartWidth
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,15 +58,15 @@ fun ChirpAdaptiveFormLayout(
     when (configuration) {
         DeviceConfiguration.MOBILE_PORTRAIT -> {
             ChirpSurface(
-                modifier = Modifier
-                    .consumeWindowInsets(WindowInsets.navigationBars)
-                    .consumeWindowInsets(WindowInsets.displayCutout),
                 header = {
                     Spacer(modifier = Modifier.height(32.dp))
                     logo()
                     Spacer(modifier = Modifier.height(32.dp))
                 }
             ) {
+                Spacer(modifier = Modifier
+                    .windowInsetsTopHeight(WindowInsets.displayCutout
+                        .union(WindowInsets.statusBars)))
                 Spacer(modifier = Modifier.height(24.dp))
                 AuthHeaderSection(
                     headerText = headerText,
@@ -71,6 +75,8 @@ fun ChirpAdaptiveFormLayout(
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 formContent()
+                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars
+                    .union(WindowInsets.ime)))
             }
         }
         DeviceConfiguration.MOBILE_LANDSCAPE -> {
@@ -100,9 +106,12 @@ fun ChirpAdaptiveFormLayout(
                     Spacer(modifier = Modifier.height(16.dp))
                     formContent()
                     Spacer(modifier = Modifier.height(16.dp))
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+                    Spacer(modifier = Modifier
+                        .windowInsetsBottomHeight(WindowInsets.navigationBars
+                            .union(WindowInsets.ime)))
                 }
-                Spacer(modifier = Modifier.windowInsetsEndWidth(WindowInsets.navigationBars))
+                Spacer(modifier = Modifier
+                    .windowInsetsEndWidth(WindowInsets.navigationBars))
             }
         }
         DeviceConfiguration.TABLET_PORTRAIT,
@@ -116,6 +125,9 @@ fun ChirpAdaptiveFormLayout(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(32.dp),
             ) {
+                Spacer(modifier = Modifier
+                    .windowInsetsTopHeight(WindowInsets.displayCutout
+                        .union(WindowInsets.statusBars)))
                 logo()
                 Column(
                     modifier = Modifier
@@ -133,6 +145,9 @@ fun ChirpAdaptiveFormLayout(
                     )
                     formContent()
                 }
+                Spacer(modifier = Modifier
+                    .windowInsetsEndWidth(WindowInsets.navigationBars
+                        .union(WindowInsets.ime)))
             }
         }
     }

@@ -41,16 +41,9 @@ class RegisterViewModel : ViewModel() {
         }
     }
     
-    private fun clearTextFieldErrors() {
-        _state.update { it.copy(
-            emailError = null,
-            usernameError = null,
-            passwordError = null,
-            registrationError = null,
-        ) }
-    }
-    
     private fun validateFormInputs(): Boolean {
+        clearTextFieldErrors()
+        
         val currentState = _state.value
         val email = currentState.usernameTextState.text.toString()
         val username = currentState.usernameTextState.text.toString()
@@ -77,5 +70,14 @@ class RegisterViewModel : ViewModel() {
         ) }
         
         return isUsernameValid && isEmailValid && passwordValidationState.isValidPassword
+    }
+    
+    private fun clearTextFieldErrors() {
+        _state.update { it.copy(
+            emailError = null,
+            usernameError = null,
+            passwordError = null,
+            registrationError = null,
+        ) }
     }
 }

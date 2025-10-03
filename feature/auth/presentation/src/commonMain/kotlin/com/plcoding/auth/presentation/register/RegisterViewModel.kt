@@ -1,5 +1,6 @@
 package com.plcoding.auth.presentation.register
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
@@ -18,6 +19,10 @@ import com.plcoding.core.presentation.util.toUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -35,7 +40,7 @@ class RegisterViewModel(
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
-                /** Load initial data here **/
+                observeValidationStates()
                 hasLoadedInitialData = true
             }
         }
@@ -44,6 +49,30 @@ class RegisterViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = RegisterState(),
         )
+    private val isEmailValidFlow = snapshotFlow { state.value.emailTextState.text.toString() }
+        .map { email -> EmailValidator.validate(email) }
+        .distinctUntilChanged()
+    private val isUsernameValidFlow = snapshotFlow { state.value.usernameTextState.text.toString() }
+        .map { username -> username.length in 3..20 }
+        .distinctUntilChanged()
+    private val isPasswordValidFlow = snapshotFlow { state.value.passwordTextState.text.toString() }
+        .map { password -> PasswordValidator.validate(password) }
+        .distinctUntilChanged()
+    
+    private fun observeValidationStates() {
+        combine(
+            isEmailValidFlow,
+            isUsernameValidFlow,
+            isPasswordValidFlow,
+        ) { isEmailValid, isUsernameValid, passwordValidationState ->
+            val allValid = isEmailValid && isUsernameValid && passwordValidationState.isValidPassword
+            _state.update {
+                it.copy(
+                    canRegister = !it.isRegistering && allValid,
+                )
+            }
+        }.launchIn(viewModelScope)
+    }
     
     fun onAction(action: RegisterAction) {
         when (action) {
@@ -51,9 +80,11 @@ class RegisterViewModel(
             RegisterAction.OnLoginClick -> validateFormInputs()
             RegisterAction.OnRegisterClick -> register()
             RegisterAction.OnTogglePasswordVisibilityClick -> {
-                _state.update { it.copy(
-                    isPasswordVisible = !it.isPasswordVisible,
-                ) }
+                _state.update {
+                    it.copy(
+                        isPasswordVisible = !it.isPasswordVisible,
+                    )
+                }
             }
         }
     }
@@ -64,9 +95,11 @@ class RegisterViewModel(
         }
         
         viewModelScope.launch {
-            _state.update { it.copy(
-                isRegistering = true,
-            ) }
+            _state.update {
+                it.copy(
+                    isRegistering = true,
+                )
+            }
             
             val email = _state.value.emailTextState.toString()
             val username = _state.value.usernameTextState.toString()
@@ -79,19 +112,23 @@ class RegisterViewModel(
                     password = password,
                 )
                 .onSuccess {
-                    _state.update { it.copy(
-                        isRegistering = false,
-                    ) }
+                    _state.update {
+                        it.copy(
+                            isRegistering = false,
+                        )
+                    }
                 }
                 .onFailure { error ->
                     val registrationError = when (error) {
                         DataError.Remote.CONFLICT -> UiText.Resource(Res.string.error_account_exists)
                         else -> error.toUiText()
                     }
-                    _state.update { it.copy(
-                        isRegistering = false,
-                        registrationError = registrationError,
-                    ) }
+                    _state.update {
+                        it.copy(
+                            isRegistering = false,
+                            registrationError = registrationError,
+                        )
+                    }
                 }
         }
     }

@@ -2,15 +2,22 @@ package com.plcoding.auth.presentation.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.error_invalid_email
+import chirp.feature.auth.presentation.generated.resources.error_invalid_password
+import chirp.feature.auth.presentation.generated.resources.error_invalid_username
+import com.plcoding.auth.domain.EmailValidator
+import com.plcoding.core.domain.validation.PasswordValidator
+import com.plcoding.core.presentation.util.UiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 class RegisterViewModel : ViewModel() {
     
     private var hasLoadedInitialData = false
-    
     private val _state = MutableStateFlow(RegisterState())
     val state = _state
         .onStart {
@@ -27,12 +34,48 @@ class RegisterViewModel : ViewModel() {
     
     fun onAction(action: RegisterAction) {
         when (action) {
-            else -> Unit
-            /*RegisterAction.OnInputTextFocusGain -> TODO()
-            RegisterAction.OnLoginClick -> TODO()
-            RegisterAction.OnRegisterClick -> TODO()
-            RegisterAction.OnTogglePasswordVisibilityClick -> TODO()*/
+            RegisterAction.OnInputTextFocusGain -> clearTextFieldErrors()
+            RegisterAction.OnLoginClick -> validateFormInputs()
+            RegisterAction.OnRegisterClick -> null
+            RegisterAction.OnTogglePasswordVisibilityClick -> null
         }
     }
     
+    private fun clearTextFieldErrors() {
+        _state.update { it.copy(
+            emailError = null,
+            usernameError = null,
+            passwordError = null,
+            registrationError = null,
+        ) }
+    }
+    
+    private fun validateFormInputs(): Boolean {
+        val currentState = _state.value
+        val email = currentState.usernameTextState.text.toString()
+        val username = currentState.usernameTextState.text.toString()
+        val password = currentState.passwordTextState.text.toString()
+        
+        val isEmailValid = EmailValidator.validate(email)
+        val isUsernameValid = username.length in 3..20
+        val passwordValidationState = PasswordValidator.validate(password)
+        
+        val emailError = if (!isEmailValid) {
+            UiText.Resource(Res.string.error_invalid_email)
+        } else null
+        val usernameError = if (!isUsernameValid) {
+            UiText.Resource(Res.string.error_invalid_username)
+        } else null
+        val passwordError = if (!passwordValidationState.isValidPassword) {
+            UiText.Resource(Res.string.error_invalid_password)
+        } else null
+        
+        _state.update { it.copy(
+            emailError = emailError,
+            usernameError = usernameError,
+            passwordError = passwordError,
+        ) }
+        
+        return isUsernameValid && isEmailValid && passwordValidationState.isValidPassword
+    }
 }

@@ -28,6 +28,7 @@ fun ChirpSimpleSuccessLayout(
     primaryButton: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     secondaryButton: @Composable (() -> Unit)? = null,
+    secondaryError: String? = null,
 ) {
     Column(
         modifier = modifier
@@ -61,6 +62,16 @@ fun ChirpSimpleSuccessLayout(
             secondaryButton?.let { button ->
                 Spacer(modifier = Modifier.height(8.dp))
                 button()
+                secondaryError?.let { error ->
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = error,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(8.dp))
         }

@@ -7,10 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatListScreenRoot(
-    modifier: Modifier = Modifier,
+    viewModel: ChatListViewModel = koinViewModel(),
 ) {
     Box(
         modifier = Modifier

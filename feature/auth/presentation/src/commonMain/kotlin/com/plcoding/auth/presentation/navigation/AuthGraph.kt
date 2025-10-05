@@ -33,8 +33,13 @@ fun NavGraphBuilder.authGraph(
         }
         composable<AuthGraphRoutes.Register> {
             RegisterRoot(
-                onRegisterSuccess = {
-                    navController.navigate(AuthGraphRoutes.RegisterSuccess(it))
+                onRegisterSuccess = { email ->
+                    navController.navigate(AuthGraphRoutes.RegisterSuccess(email)) {
+                        popUpTo<AuthGraphRoutes.Register> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 },
                 onLoginClick = {
                     navController.navigate(AuthGraphRoutes.Login) {
@@ -49,7 +54,16 @@ fun NavGraphBuilder.authGraph(
             )
         }
         composable<AuthGraphRoutes.RegisterSuccess> {
-            RegisterSuccessRoot()
+            RegisterSuccessRoot(
+                onLoginClick = {
+                    navController.navigate(AuthGraphRoutes.Login) {
+                        popUpTo<AuthGraphRoutes.RegisterSuccess> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
         composable<AuthGraphRoutes.EmailVerification>(
             deepLinks = listOf(
@@ -61,7 +75,24 @@ fun NavGraphBuilder.authGraph(
                 },
             )
         ) {
-            EmailVerificationRoot()
+            EmailVerificationRoot(
+                onLoginClick = {
+                    navController.navigate(AuthGraphRoutes.Login) {
+                        popUpTo<AuthGraphRoutes.EmailVerification> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                onCloseClick = {
+                    navController.navigate(AuthGraphRoutes.Login) {
+                        popUpTo<AuthGraphRoutes.EmailVerification> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }

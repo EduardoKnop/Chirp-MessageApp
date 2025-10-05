@@ -32,6 +32,7 @@ import com.plcoding.core.designsystem.components.textfields.ChirpPasswordTextFie
 import com.plcoding.core.designsystem.components.textfields.ChirpTextField
 import com.plcoding.core.designsystem.layout.ChirpAdaptiveFormLayout
 import com.plcoding.core.designsystem.theme.ChirpTheme
+import com.plcoding.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -44,6 +45,12 @@ fun LoginRoot(
     onCreateAccountClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is LoginEvent.Success -> onLoginSuccess()
+        }
+    }
     
     LoginScreen(
         state = state,

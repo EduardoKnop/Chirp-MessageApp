@@ -46,8 +46,8 @@ class RegisterSuccessViewModel(
     
     fun onAction(action: RegisterSuccessAction) {
         when (action) {
-            RegisterSuccessAction.OnLoginClick -> TODO()
             RegisterSuccessAction.OnResendVerificationEmailClick -> resendVerification()
+            else -> Unit
         }
     }
     

@@ -85,6 +85,7 @@ fun RegisterScreen(
                     ?: stringResource(Res.string.username_hint),
                 isError = state.usernameError != null,
                 onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) },
+                singleLine = true,
             )
             Spacer(modifier = Modifier.height(16.dp))
             ChirpTextField(
@@ -95,6 +96,7 @@ fun RegisterScreen(
                 isError = state.emailError != null,
                 onFocusChanged = { onAction(RegisterAction.OnInputTextFocusGain) },
                 keyboardType = KeyboardType.Email,
+                singleLine = true,
             )
             Spacer(modifier = Modifier.height(16.dp))
             ChirpPasswordTextField(

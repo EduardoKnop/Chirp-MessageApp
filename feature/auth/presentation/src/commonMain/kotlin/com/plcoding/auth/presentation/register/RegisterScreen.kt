@@ -3,10 +3,8 @@ package com.plcoding.auth.presentation.register
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,6 @@ fun RegisterRoot(
     onLoginClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
     
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -59,7 +56,6 @@ fun RegisterRoot(
             }
             viewModel.onAction(action)
         },
-        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -67,11 +63,8 @@ fun RegisterRoot(
 fun RegisterScreen(
     state: RegisterState,
     onAction: (RegisterAction) -> Unit,
-    snackbarHostState: SnackbarHostState,
 ) {
-    ChirpSnackbarScaffold(
-        snackbarHostState = snackbarHostState,
-    ) {
+    ChirpSnackbarScaffold {
         ChirpAdaptiveFormLayout(
             headerText = stringResource(Res.string.welcome_to_chirp),
             errorText = state.registrationError?.asString(),
@@ -137,7 +130,6 @@ private fun RegisterScreenPreview() {
         RegisterScreen(
             state = RegisterState(),
             onAction = { },
-            snackbarHostState = remember { SnackbarHostState() },
         )
     }
 }

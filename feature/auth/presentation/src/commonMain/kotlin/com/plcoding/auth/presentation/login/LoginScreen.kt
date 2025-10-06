@@ -1,14 +1,11 @@
 package com.plcoding.auth.presentation.login
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +28,7 @@ import com.plcoding.core.designsystem.components.buttons.ChirpButtonStyle
 import com.plcoding.core.designsystem.components.textfields.ChirpPasswordTextField
 import com.plcoding.core.designsystem.components.textfields.ChirpTextField
 import com.plcoding.core.designsystem.layout.ChirpAdaptiveFormLayout
+import com.plcoding.core.designsystem.layout.ChirpSnackbarScaffold
 import com.plcoding.core.designsystem.theme.ChirpTheme
 import com.plcoding.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
@@ -70,59 +68,55 @@ fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit,
 ) {
-    Scaffold { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding),
+    ChirpSnackbarScaffold {
+        ChirpAdaptiveFormLayout(
+            headerText = stringResource(Res.string.welcome_back),
+            errorText = state.error?.asString(),
+            logo = { ChirpBrandLogo() },
+            modifier = Modifier
+                .fillMaxSize(),
         ) {
-            ChirpAdaptiveFormLayout(
-                headerText = stringResource(Res.string.welcome_back),
-                errorText = state.error?.asString(),
-                logo = { ChirpBrandLogo() },
+            ChirpTextField(
+                state = state.emailTextFieldState,
+                placeholder = stringResource(Res.string.email_placeholder),
+                keyboardType = KeyboardType.Email,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(Res.string.email),
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            ChirpPasswordTextField(
+                state = state.passwordTextFieldState,
+                placeholder = stringResource(Res.string.password),
+                isPasswordVisible = state.isPasswordVisible,
+                onToggleVisibilityClick = { onAction(LoginAction.OnTogglePasswordVisibility) },
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(Res.string.password),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(Res.string.forgot_password),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier
-                    .fillMaxSize(),
-            ) {
-                ChirpTextField(
-                    state = state.emailTextFieldState,
-                    placeholder = stringResource(Res.string.email_placeholder),
-                    keyboardType = KeyboardType.Email,
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    title = stringResource(Res.string.email),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                ChirpPasswordTextField(
-                    state = state.passwordTextFieldState,
-                    placeholder = stringResource(Res.string.password),
-                    isPasswordVisible = state.isPasswordVisible,
-                    onToggleVisibilityClick = { onAction(LoginAction.OnTogglePasswordVisibility) },
-                    modifier = Modifier.fillMaxWidth(),
-                    title = stringResource(Res.string.password),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(Res.string.forgot_password),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.tertiary,
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .clickable { onAction(LoginAction.OnForgotPasswordClick) },
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                ChirpButton(
-                    text = stringResource(Res.string.login),
-                    onClick = { onAction(LoginAction.OnLoginClick) },
-                    enabled = state.canLogin,
-                    isLoading = state.isLoggingIn,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ChirpButton(
-                    text = stringResource(Res.string.create_account),
-                    onClick = { onAction(LoginAction.OnSignUpClick) },
-                    modifier = Modifier.fillMaxWidth(),
-                    style = ChirpButtonStyle.SECONDARY,
-                )
-            }
+                    .align(Alignment.End)
+                    .clickable { onAction(LoginAction.OnForgotPasswordClick) },
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            ChirpButton(
+                text = stringResource(Res.string.login),
+                onClick = { onAction(LoginAction.OnLoginClick) },
+                enabled = state.canLogin,
+                isLoading = state.isLoggingIn,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            ChirpButton(
+                text = stringResource(Res.string.create_account),
+                onClick = { onAction(LoginAction.OnSignUpClick) },
+                modifier = Modifier.fillMaxWidth(),
+                style = ChirpButtonStyle.SECONDARY,
+            )
         }
     }
 }

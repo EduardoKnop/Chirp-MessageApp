@@ -36,6 +36,7 @@ import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.theme.ChirpTheme
 import com.plcoding.core.designsystem.theme.extended
 import com.plcoding.core.presentation.util.DeviceConfiguration
+import com.plcoding.core.presentation.util.clearFocusOnTap
 import com.plcoding.core.presentation.util.currentDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -57,6 +58,7 @@ fun ChirpAdaptiveFormLayout(
     when (configuration) {
         DeviceConfiguration.MOBILE_PORTRAIT -> {
             ChirpSurface(
+                modifier = modifier.clearFocusOnTap(),
                 header = {
                     Spacer(modifier = Modifier.height(32.dp))
                     logo()
@@ -83,6 +85,7 @@ fun ChirpAdaptiveFormLayout(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
+                    .clearFocusOnTap()
                     .background(MaterialTheme.colorScheme.background),
             ) {
                 Spacer(modifier = Modifier.windowInsetsStartWidth(WindowInsets.displayCutout))
@@ -121,6 +124,7 @@ fun ChirpAdaptiveFormLayout(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .clearFocusOnTap()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(top = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,

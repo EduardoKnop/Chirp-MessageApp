@@ -69,7 +69,7 @@ fun ChirpAvatarPhoto(
 
 @Preview
 @Composable
-fun ChirpAvatarPhotoPreview() {
+private fun ChirpAvatarPhotoPreview() {
     ChirpTheme {
         ChirpAvatarPhoto(
             displayText = "EK",

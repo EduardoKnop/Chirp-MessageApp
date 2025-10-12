@@ -1,8 +1,8 @@
 package com.plcoding.core.designsystem.components.avatar
 
-data class AvatarUi(
+data class ChatParticipantUi(
     val id: String,
     val username: String,
-    val initialText: String,
+    val initials: String,
     val imageUrl: String? = null,
 )

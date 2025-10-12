@@ -48,7 +48,7 @@ fun DestructiveConfirmationDialog(
         ),
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .padding(
                     horizontal = 24.dp,
                     vertical = 16.dp,
@@ -111,7 +111,7 @@ fun DestructiveConfirmationDialog(
 
 @Preview
 @Composable
-fun DestructiveConfirmationDialogPreview() {
+private fun DestructiveConfirmationDialogPreview() {
     ChirpTheme {
         DestructiveConfirmationDialog(
             title = "Delete profile picture?",

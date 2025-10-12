@@ -1,6 +1,6 @@
 package com.plcoding.chat.domain.models
 
-data class ChatParticipants(
+data class ChatParticipant(
     val userId: String,
     val userName: String,
     val profilePictureUrl: String?,

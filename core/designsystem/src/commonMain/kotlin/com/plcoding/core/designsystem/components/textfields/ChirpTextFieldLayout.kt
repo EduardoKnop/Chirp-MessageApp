@@ -44,7 +44,7 @@ fun ChirpTextFieldLayout(
                 enabled -> MaterialTheme.colorScheme.surface
                 else -> MaterialTheme.colorScheme.extended.secondaryFill
             },
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         )
         .border(
             width = 1.dp,
@@ -53,7 +53,7 @@ fun ChirpTextFieldLayout(
                 isFocused -> MaterialTheme.colorScheme.primary
                 else -> MaterialTheme.colorScheme.outline
             },
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         )
         .padding(12.dp)
     
@@ -66,8 +66,8 @@ fun ChirpTextFieldLayout(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.extended.textSecondary,
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
-        Spacer(modifier = Modifier.height(8.dp))
         
         textField(textFieldStyleModifier, interactionSource)
         

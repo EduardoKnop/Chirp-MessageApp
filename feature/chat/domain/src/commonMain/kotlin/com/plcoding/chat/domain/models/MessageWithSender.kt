@@ -2,6 +2,6 @@ package com.plcoding.chat.domain.models
 
 data class MessageWithSender(
     val message: ChatMessage,
-    val sender: ChatParticipants,
+    val sender: ChatParticipant,
     val deliveryStatus: ChatMessageDeliveryStatus?,
 )

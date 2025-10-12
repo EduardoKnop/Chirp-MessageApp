@@ -14,6 +14,8 @@ kotlin {
                 
                 implementation(projects.feature.chat.domain)
                 implementation(projects.feature.chat.database)
+                implementation(libs.bundles.ktor.common)
+                implementation(libs.koin.core)
             }
         }
         

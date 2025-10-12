@@ -23,7 +23,9 @@ fun NavGraphBuilder.chatGraph(
         startDestination = ChatGraphRoutes.ChatListDetail,
     ) {
         composable<ChatGraphRoutes.ChatListDetail> {
-            ChatListDetailAdaptiveLayout()
+            ChatListDetailAdaptiveLayout(
+                onLogout = { },
+            )
         }
     }
 }

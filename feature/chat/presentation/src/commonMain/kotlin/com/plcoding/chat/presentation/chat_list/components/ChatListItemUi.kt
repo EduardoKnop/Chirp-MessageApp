@@ -90,7 +90,7 @@ fun ChatListItemUi(
                     if (isGroupChat) {
                         val youString = stringResource(Res.string.chat_participant_you)
                         val formattedUsernames = remember(chat.otherParticipants) {
-                            youString + chat.otherParticipants.joinToString { it.username }
+                            "$youString, " + chat.otherParticipants.joinToString { it.username }
                         }
                         Text(
                             text = formattedUsernames,

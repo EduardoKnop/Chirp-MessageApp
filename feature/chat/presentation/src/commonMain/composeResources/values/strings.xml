@@ -15,7 +15,14 @@
     <string name="open_chat_options_menu">Open chat options menu</string>
     <string name="chat_members">Chat members</string>
     <string name="leave_chat">Leave chat</string>
+    <string name="send">Send</string>
+    <string name="send_message">Send message</string>
     <string name="go_back">Go back</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="reconnecting">Reconnecting…</string>
+    <string name="error_network">Network error</string>
+    <string name="error_unknown">Unknown error</string>
     <string name="delete_for_everyone">Delete for everyone</string>
     <string name="no_messages">No messages</string>
     <string name="no_messages_subtitle">Create new chat to start messaging</string>

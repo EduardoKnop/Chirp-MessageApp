@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -42,7 +43,7 @@ import chirp.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ChatDetailHeader(
-    chatUi: ChatUi,
+    chatUi: ChatUi?,
     isDetailPresent: Boolean,
     isChatOptionsDropDownOpen: Boolean,
     onChatOptionsClick: () -> Unit,
@@ -52,8 +53,6 @@ fun ChatDetailHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isGroupChat = chatUi.otherParticipants.size > 1
-    
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -63,7 +62,7 @@ fun ChatDetailHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        if (!isDetailPresent) {
+        if (isDetailPresent) {
             ChirpIconButton(
                 onClick = onBackClick,
             ) {
@@ -76,13 +75,18 @@ fun ChatDetailHeader(
             }
         }
         
-        ChatItemHeaderRow(
-            chat = chatUi,
-            isGroupChat = isGroupChat,
-            modifier = Modifier
-                .weight(1f)
-                .clickable { onManageChatClick() },
-        )
+        if (chatUi != null) {
+            val isGroupChat = chatUi.otherParticipants.size > 1
+            ChatItemHeaderRow(
+                chat = chatUi,
+                isGroupChat = isGroupChat,
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { onManageChatClick() },
+            )
+        } else {
+            Spacer(modifier = Modifier.weight(1f))
+        }
         
         Box {
             ChirpIconButton(

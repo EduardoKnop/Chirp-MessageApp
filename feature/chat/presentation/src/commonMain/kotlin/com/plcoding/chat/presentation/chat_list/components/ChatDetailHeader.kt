@@ -63,7 +63,7 @@ fun ChatDetailHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        if (isDetailPresent) {
+        if (!isDetailPresent) {
             ChirpIconButton(
                 onClick = onBackClick,
             ) {

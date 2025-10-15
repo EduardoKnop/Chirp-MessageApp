@@ -12,7 +12,7 @@ interface ChatParticipantDao {
     suspend fun upsertParticipant(participant: ChatParticipantEntity)
     
     @Upsert
-    suspend fun upsertParticipant(participants: List<ChatParticipantEntity>)
+    suspend fun upsertParticipants(participants: List<ChatParticipantEntity>)
     
     @Query("SELECT * FROM chatparticipantentity")
     suspend fun getAllParticipants(): List<ChatParticipantEntity>

@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.plcoding.chat.domain.models.ChatMessage
+import com.plcoding.chat.domain.models.ChatMessageDeliveryStatus
 import com.plcoding.chat.presentation.components.ChatItemHeaderRow
 import com.plcoding.chat.presentation.model.ChatUi
 import com.plcoding.core.designsystem.components.avatar.ChatParticipantUi
@@ -127,6 +128,7 @@ private fun ChatListItemUiGroupPreview() {
                     content = "Hello, how are you? I need to tell you something important. " +
                             "Please get back to me when you can. Thanks! This is a long message to test the overflow handling in the UI component.",
                     createdAt = Clock.System.now(),
+                    deliveryStatus = ChatMessageDeliveryStatus.SENT,
                 ),
                 lastMessageSenderUsername = "Jane Smith",
             ),
@@ -162,6 +164,7 @@ private fun ChatListItemUiPreview() {
                     senderId = "2",
                     content = "Hello, how are you?",
                     createdAt = Clock.System.now(),
+                    deliveryStatus = ChatMessageDeliveryStatus.SENT,
                 ),
                 lastMessageSenderUsername = "Jane Smith",
             ),

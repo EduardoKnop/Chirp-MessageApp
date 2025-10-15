@@ -1,12 +1,29 @@
 package com.plcoding.chat.data.mappers
 
 import com.plcoding.chat.data.dto.ChatParticipantDto
+import com.plcoding.chat.database.entities.ChatParticipantEntity
 import com.plcoding.chat.domain.models.ChatParticipant
 
 fun ChatParticipantDto.toDomain(): ChatParticipant {
     return ChatParticipant(
         userId = userId,
         userName = username,
+        profilePictureUrl = profilePictureUrl,
+    )
+}
+
+fun ChatParticipantEntity.toDomain(): ChatParticipant {
+    return ChatParticipant(
+        userId = userId,
+        userName = username,
+        profilePictureUrl = profilePictureUrl,
+    )
+}
+
+fun ChatParticipant.toEntity(): ChatParticipantEntity {
+    return ChatParticipantEntity(
+        userId = userId,
+        username = userName,
         profilePictureUrl = profilePictureUrl,
     )
 }

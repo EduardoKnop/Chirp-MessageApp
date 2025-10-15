@@ -26,6 +26,7 @@ import chirp.feature.chat.presentation.generated.resources.leave_chat
 import chirp.feature.chat.presentation.generated.resources.open_chat_options_menu
 import chirp.feature.chat.presentation.generated.resources.users_icon
 import com.plcoding.chat.domain.models.ChatMessage
+import com.plcoding.chat.domain.models.ChatMessageDeliveryStatus
 import com.plcoding.chat.presentation.components.ChatHeader
 import com.plcoding.chat.presentation.components.ChatItemHeaderRow
 import com.plcoding.chat.presentation.model.ChatUi
@@ -158,6 +159,7 @@ private fun ChatDetailHeaderPreview() {
                             senderId = "2",
                             content = "Hello, how are you?",
                             createdAt = Clock.System.now(),
+                            deliveryStatus = ChatMessageDeliveryStatus.SENT,
                         ),
                         lastMessageSenderUsername = "Jane Smith",
                     ),

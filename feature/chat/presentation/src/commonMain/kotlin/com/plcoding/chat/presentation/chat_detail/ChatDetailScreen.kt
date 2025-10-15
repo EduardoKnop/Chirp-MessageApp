@@ -246,6 +246,7 @@ private fun ChatDetailScreenMessagesPreview() {
                         content = "Hello, how are you? I need to tell you something important. " +
                                 "Please get back to me when you can. Thanks! This is a long message to test the overflow handling in the UI component.",
                         createdAt = Clock.System.now(),
+                        deliveryStatus = ChatMessageDeliveryStatus.SENT,
                     ),
                     lastMessageSenderUsername = "Jane Smith",
                 ),

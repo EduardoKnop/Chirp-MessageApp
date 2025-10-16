@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.avatar.ChatParticipantUi
 import com.plcoding.core.designsystem.components.avatar.ChirpAvatarPhoto
+import com.plcoding.core.designsystem.components.brand.ChirpHorizontalDivider
 import com.plcoding.core.designsystem.theme.ChirpTheme
 import com.plcoding.core.designsystem.theme.extended
 import com.plcoding.core.designsystem.theme.titleXSmall
@@ -30,6 +31,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ColumnScope.ChatParticipantsSelectionSection(
+    existingParticipants: List<ChatParticipantUi>,
     selectedParticipants: List<ChatParticipantUi>,
     modifier: Modifier = Modifier,
     searchResult: ChatParticipantUi? = null,
@@ -53,6 +55,22 @@ fun ColumnScope.ChatParticipantsSelectionSection(
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            items(
+                items = existingParticipants,
+                key = { "existing_${it.id}" },
+            ) { participant ->
+                ChatParticipantListItem(
+                    participant = participant,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+            
+            if (existingParticipants.isNotEmpty()) {
+                item {
+                    ChirpHorizontalDivider()
+                }
+            }
+            
             searchResult?.let {
                 item {
                     ChatParticipantListItem(
@@ -110,6 +128,14 @@ private fun ChatParticipantsSelectionSectionPreview() {
     ChirpTheme {
         Column {
             ChatParticipantsSelectionSection(
+                existingParticipants = List(3) {
+                    ChatParticipantUi(
+                        id = it.toString(),
+                        username = "Existing $it",
+                        initials = "E$it",
+                        imageUrl = null,
+                    )
+                },
                 selectedParticipants = List(10) {
                     ChatParticipantUi(
                         id = it.toString(),

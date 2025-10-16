@@ -8,6 +8,8 @@ import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.error_participant_not_found
 import com.plcoding.chat.domain.chat.ChatParticipantService
 import com.plcoding.chat.domain.chat.ChatRepository
+import com.plcoding.chat.presentation.components.manage_chat.ManageChatAction
+import com.plcoding.chat.presentation.components.manage_chat.ManageChatState
 import com.plcoding.chat.presentation.mappers.toUi
 import com.plcoding.core.domain.util.DataError
 import com.plcoding.core.domain.util.onFailure
@@ -35,7 +37,7 @@ class CreateChatViewModel(
 ) : ViewModel() {
     
     private var hasLoadedInitialData = false
-    private val _state = MutableStateFlow(CreateChatState())
+    private val _state = MutableStateFlow(ManageChatState())
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
@@ -46,7 +48,7 @@ class CreateChatViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = CreateChatState(),
+            initialValue = ManageChatState(),
         )
     private val eventChannel = Channel<CreateChatEvent>()
     val events = eventChannel.receiveAsFlow()
@@ -105,10 +107,10 @@ class CreateChatViewModel(
         }
     }
     
-    fun onAction(action: CreateChatAction) {
+    fun onAction(action: ManageChatAction) {
         when (action) {
-            CreateChatAction.OnAddClick -> addParticipant()
-            CreateChatAction.OnCreateChatClick -> createChat()
+            ManageChatAction.OnAddClick -> addParticipant()
+            ManageChatAction.OnPrimaryActionClick -> createChat()
             else -> Unit
         }
     }

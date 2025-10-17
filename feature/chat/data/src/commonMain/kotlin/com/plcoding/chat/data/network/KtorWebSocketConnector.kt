@@ -79,7 +79,7 @@ class KtorWebSocketConnector(
             SharingStarted.WhileSubscribed(5_000L),
             false,
         )
-    val messagesFlow = combine(
+    val messages = combine(
         sessionStorage.observeAuthInfo(),
         isConnected,
         isInForeground,

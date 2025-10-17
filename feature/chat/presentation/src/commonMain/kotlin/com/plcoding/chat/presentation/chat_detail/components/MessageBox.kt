@@ -1,5 +1,7 @@
 package com.plcoding.chat.presentation.chat_detail.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -14,8 +16,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import chirp.feature.chat.presentation.generated.resources.Res
@@ -41,10 +46,18 @@ fun MessageBox(
     modifier: Modifier = Modifier,
 ) {
     val isConnected = connectionState == ConnectionState.CONNECTED
+    val focusRequester = remember { FocusRequester() }
     
     ChirpMultiLineTextField(
         state = messageTextFieldState,
-        modifier = modifier,
+        modifier = modifier
+            .focusRequester(focusRequester)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                focusRequester.requestFocus()
+            },
         placeholder = stringResource(Res.string.send_message),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Send,

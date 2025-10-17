@@ -50,7 +50,7 @@ fun ChatMessage.toEntity(): ChatMessageEntity {
         chatId = chatId,
         senderId = senderId,
         content = content,
-        timestamp = createdAt.epochSeconds,
+        timestamp = createdAt.toEpochMilliseconds(),
         deliveryStatus = deliveryStatus.name,
     )
 }

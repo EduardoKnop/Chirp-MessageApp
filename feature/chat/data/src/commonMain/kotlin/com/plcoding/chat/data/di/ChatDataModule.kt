@@ -5,7 +5,10 @@ import com.plcoding.chat.data.chat.KtorChatParticipantService
 import com.plcoding.chat.data.chat.KtorChatService
 import com.plcoding.chat.data.chat.OfflineFirstChatRepository
 import com.plcoding.chat.data.chat.WebSocketChatConnectionClient
+import com.plcoding.chat.data.message.ChatMessageService
+import com.plcoding.chat.data.message.KtorChatMessageService
 import com.plcoding.chat.data.message.OfflineFirstMessageRepository
+import com.plcoding.chat.data.network.ConnectionRetryHandler
 import com.plcoding.chat.data.network.KtorWebSocketConnector
 import com.plcoding.chat.database.DatabaseFactory
 import com.plcoding.chat.domain.chat.ChatConnectionClient
@@ -30,7 +33,9 @@ val chatDataModule = module {
     singleOf(::OfflineFirstChatRepository) bind ChatRepository::class
     singleOf(::OfflineFirstMessageRepository) bind MessageRepository::class
     singleOf(::WebSocketChatConnectionClient) bind ChatConnectionClient::class
+    singleOf(::ConnectionRetryHandler)
     singleOf(::KtorWebSocketConnector)
+    singleOf(::KtorChatMessageService) bind ChatMessageService::class
     single {
         Json {
             ignoreUnknownKeys = true

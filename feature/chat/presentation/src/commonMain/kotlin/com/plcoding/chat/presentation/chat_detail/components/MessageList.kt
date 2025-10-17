@@ -50,6 +50,7 @@ fun MessageList(
         ) {
             items(
                 items = messages,
+                // TODO: Add key
             ) { message ->
                 MessageListItemUi(
                     messageUi = message,
@@ -59,6 +60,7 @@ fun MessageList(
                     onRetryClick = onMessageRetryClick,
                     modifier = Modifier
                         .fillMaxWidth()
+                    // TODO: Animate item placement
                 )
             }
         }

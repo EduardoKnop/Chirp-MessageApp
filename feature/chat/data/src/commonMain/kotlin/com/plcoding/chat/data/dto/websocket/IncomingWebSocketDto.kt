@@ -13,6 +13,7 @@ enum class IncomingWebSocketType {
 sealed class IncomingWebSocketDto(
     private val type: IncomingWebSocketType,
 ) {
+    
     @Serializable
     data class NewMessageDto(
         val id: String,

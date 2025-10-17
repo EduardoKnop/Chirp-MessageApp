@@ -1,6 +1,7 @@
 package com.plcoding.chat.data.mappers
 
 import com.plcoding.chat.data.dto.ChatMessageDto
+import com.plcoding.chat.data.dto.websocket.OutgoingWebSocketDto
 import com.plcoding.chat.database.entities.ChatMessageEntity
 import com.plcoding.chat.database.view.LastMessageView
 import com.plcoding.chat.domain.models.ChatMessage
@@ -70,5 +71,13 @@ fun LastMessageView.toEntity(): ChatMessageEntity {
         content = content,
         timestamp = timestamp,
         deliveryStatus = deliveryStatus,
+    )
+}
+
+fun ChatMessage.toNewMessage(): OutgoingWebSocketDto.NewMessage {
+    return OutgoingWebSocketDto.NewMessage(
+        chatId = chatId,
+        messageId = id,
+        content = content,
     )
 }

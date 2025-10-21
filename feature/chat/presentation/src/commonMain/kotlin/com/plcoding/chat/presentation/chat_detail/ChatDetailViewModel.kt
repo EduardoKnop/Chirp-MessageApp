@@ -10,6 +10,7 @@ import com.plcoding.chat.domain.message.MessageRepository
 import com.plcoding.chat.domain.models.ConnectionState
 import com.plcoding.chat.domain.models.OutgoingNewMessage
 import com.plcoding.chat.presentation.mappers.toUi
+import com.plcoding.chat.presentation.model.MessageUi
 import com.plcoding.core.domain.auth.SessionStorage
 import com.plcoding.core.domain.util.onFailure
 import com.plcoding.core.domain.util.onSuccess
@@ -36,7 +37,7 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalUuidApi::class)
 class ChatDetailViewModel(
     private val chatRepository: ChatRepository,
-    private val sessionStorage: SessionStorage,
+    sessionStorage: SessionStorage,
     private val messageRepository: MessageRepository,
     private val connectionClient: ChatConnectionClient,
 ) : ViewModel() {
@@ -89,6 +90,7 @@ class ChatDetailViewModel(
         
         currentState.copy(
             chatUi = chatInfo.chat.toUi(authInfo.user.id),
+            messages = chatInfo.messages.map { it.toUi(authInfo.user.id) },
         )
     }
     
@@ -103,9 +105,19 @@ class ChatDetailViewModel(
             ChatDetailAction.OnDismissMessageMenu -> {}
             ChatDetailAction.OnLeaveChatClick -> onLeaveChatClick()
             is ChatDetailAction.OnMessageLongClick -> {}
-            is ChatDetailAction.OnRetryClick -> {}
+            is ChatDetailAction.OnRetryClick -> retryMessage(action.message)
             ChatDetailAction.OnScrollToTop -> {}
             ChatDetailAction.OnSendMessageClick -> sendMessage()
+        }
+    }
+    
+    private fun retryMessage(message: MessageUi.LocalUserMessage) {
+        viewModelScope.launch {
+            messageRepository
+                .retryMessage(message.id)
+                .onFailure { error ->
+                    eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
+                }
         }
     }
     
@@ -130,6 +142,7 @@ class ChatDetailViewModel(
                 }
                 .onFailure { error ->
                     eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
+                    _state.value.messageTextFieldState.clearText()
                 }
         }
     }
@@ -200,19 +213,6 @@ class ChatDetailViewModel(
                 if (chatId != null) {
                     messageRepository.getMessagesForChat(chatId)
                 } else emptyFlow()
-            }
-            .combine(sessionStorage.observeAuthInfo()) { messages, authInfo ->
-                if (authInfo == null) {
-                    return@combine messages
-                }
-                
-                _state.update {
-                    it.copy(
-                        messages = messages.map { it.toUi(authInfo.user.id) }
-                    )
-                }
-                
-                messages
             }
         
         val isNearBottom = state.map { it.isNearBottom }.distinctUntilChanged()

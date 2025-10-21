@@ -3,8 +3,10 @@ package com.plcoding.chat.data.message
 import com.plcoding.chat.data.dto.ChatMessageDto
 import com.plcoding.chat.data.mappers.toDomain
 import com.plcoding.chat.domain.models.ChatMessage
+import com.plcoding.core.data.networking.delete
 import com.plcoding.core.data.networking.get
 import com.plcoding.core.domain.util.DataError
+import com.plcoding.core.domain.util.EmptyResult
 import com.plcoding.core.domain.util.Result
 import com.plcoding.core.domain.util.map
 import io.ktor.client.HttpClient
@@ -26,5 +28,11 @@ class KtorChatMessageService(
                 }
             }
         ).map { it.map { it.toDomain() } }
+    }
+    
+    override suspend fun deleteMessage(messageId: String): EmptyResult<DataError.Remote> {
+        return httpClient.delete(
+            route = "/messages/$messageId",
+        )
     }
 }

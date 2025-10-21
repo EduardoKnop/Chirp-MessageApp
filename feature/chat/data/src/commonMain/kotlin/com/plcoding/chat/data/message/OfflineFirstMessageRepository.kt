@@ -126,6 +126,16 @@ class OfflineFirstMessageRepository(
         }
     }
     
+    override suspend fun deleteMessage(messageId: String): EmptyResult<DataError.Remote> {
+        return messageService
+            .deleteMessage(messageId)
+            .onSuccess {
+                applicationScope.launch {
+                    database.chatMessageDao.deleteMessageById(messageId)
+                }.join()
+            }
+    }
+    
     override fun getMessagesForChat(chatId: String): Flow<List<MessageWithSender>> {
         return database
             .chatMessageDao

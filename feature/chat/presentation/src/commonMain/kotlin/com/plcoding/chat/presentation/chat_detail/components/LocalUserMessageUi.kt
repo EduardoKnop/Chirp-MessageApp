@@ -31,6 +31,7 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 fun LocalUserMessageUi(
     messageUi: MessageUi.LocalUserMessage,
+    messageWithOpenMenu: MessageUi.LocalUserMessage?,
     onMessageLongClick: () -> Unit,
     onDismissMessageMenu: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -59,7 +60,7 @@ fun LocalUserMessageUi(
             )
             
             ChirpDropdownMenu(
-                isOpen = messageUi.isMenuOpen,
+                isOpen = messageWithOpenMenu?.id == messageUi.id,
                 onDismiss = onDismissMessageMenu,
                 items = listOf(
                     DropDownItem(

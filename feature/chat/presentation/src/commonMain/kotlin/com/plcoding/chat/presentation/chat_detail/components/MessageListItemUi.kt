@@ -24,6 +24,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun MessageListItemUi(
     messageUi: MessageUi,
+    messageWithOpenMenu: MessageUi.LocalUserMessage?,
     onMessageLongClick: (MessageUi.LocalUserMessage) -> Unit,
     onDismissMessageMenu: () -> Unit,
     onDeleteClick: (MessageUi.LocalUserMessage) -> Unit,
@@ -43,6 +44,7 @@ fun MessageListItemUi(
             is MessageUi.LocalUserMessage -> {
                 LocalUserMessageUi(
                     messageUi = messageUi,
+                    messageWithOpenMenu = messageWithOpenMenu,
                     onMessageLongClick = { onMessageLongClick(messageUi) },
                     onDismissMessageMenu = onDismissMessageMenu,
                     onDeleteClick = { onDeleteClick(messageUi) },
@@ -88,9 +90,9 @@ private fun MessageListLocalMessageItemUiPreview() {
                 id = "1",
                 content = "Test",
                 deliveryStatus = ChatMessageDeliveryStatus.SENT,
-                isMenuOpen = true,
                 formattedSentTime = UiText.DynamicString("Friday 2:20pm"),
             ),
+            messageWithOpenMenu = null,
             onRetryClick = { },
             onMessageLongClick = { },
             onDismissMessageMenu = { },
@@ -111,9 +113,9 @@ private fun MessageListLocalMessageRetryItemUiPreview() {
                 id = "1",
                 content = "Test",
                 deliveryStatus = ChatMessageDeliveryStatus.FAILED,
-                isMenuOpen = false,
                 formattedSentTime = UiText.DynamicString("Friday 2:20pm"),
             ),
+            messageWithOpenMenu = null,
             onRetryClick = { },
             onMessageLongClick = { },
             onDismissMessageMenu = { },
@@ -139,6 +141,7 @@ private fun MessageListOtherMessageItemUiPreview() {
                     initials = "JE",
                 )
             ),
+            messageWithOpenMenu = null,
             onRetryClick = { },
             onMessageLongClick = { },
             onDismissMessageMenu = { },

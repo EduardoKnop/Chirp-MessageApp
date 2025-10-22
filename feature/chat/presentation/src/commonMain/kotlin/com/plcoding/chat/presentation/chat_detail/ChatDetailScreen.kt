@@ -40,6 +40,7 @@ import com.plcoding.chat.domain.models.ChatMessage
 import com.plcoding.chat.domain.models.ChatMessageDeliveryStatus
 import com.plcoding.chat.presentation.chat_detail.components.MessageBox
 import com.plcoding.chat.presentation.chat_detail.components.MessageList
+import com.plcoding.chat.presentation.chat_detail.components.PaginationScrollListener
 import com.plcoding.chat.presentation.chat_list.components.ChatDetailHeader
 import com.plcoding.chat.presentation.components.ChatHeader
 import com.plcoding.chat.presentation.components.EmptySection
@@ -124,6 +125,20 @@ fun ChatDetailScreen(
 ) {
     val configuration = currentDeviceConfiguration()
     val messageListState = rememberLazyListState()
+    val realMessageItemCount = remember(state.messages) {
+        state
+            .messages
+            .filter { it is MessageUi.LocalUserMessage || it is MessageUi.OtherUserMessage }
+            .size
+    }
+    
+    PaginationScrollListener(
+        lazyListState = messageListState,
+        itemCount = realMessageItemCount,
+        isPaginationLoading = state.isPaginationLoading,
+        isEndReached = state.endReached,
+        onNearTop = { onAction(ChatDetailAction.OnScrollToTop) },
+    )
     
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -181,6 +196,8 @@ fun ChatDetailScreen(
                             messages = state.messages,
                             messageWithOpenMenu = state.messageWithOpenMenu,
                             listState = messageListState,
+                            isPaginationLoading = state.isPaginationLoading,
+                            paginationError = state.paginationError?.asString(),
                             onMessageLongClick = { message ->
                                 onAction(ChatDetailAction.OnMessageLongClick(message))
                             },
@@ -190,6 +207,9 @@ fun ChatDetailScreen(
                             onDismissMessageMenu = { onAction(ChatDetailAction.OnDismissMessageMenu) },
                             onDeleteMessageClick = { message ->
                                 onAction(ChatDetailAction.OnDeleteMessageClick(message))
+                            },
+                            onPaginationRetryClick = {
+                                onAction(ChatDetailAction.OnPaginationRetryClick)
                             },
                             modifier = Modifier
                                 .fillMaxWidth()

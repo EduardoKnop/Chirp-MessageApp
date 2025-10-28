@@ -65,16 +65,9 @@ class ProfileViewModel(
     fun onAction(action: ProfileAction) {
         when (action) {
             ProfileAction.OnChangePasswordClick -> changePassword()
-            ProfileAction.OnConfirmDeletePictureClick -> TODO()
-            ProfileAction.OnDeletePictureClick -> TODO()
-            ProfileAction.OnDismiss -> TODO()
-            ProfileAction.OnDismissDeleteConfirmationDialogClick -> TODO()
-            ProfileAction.OnErrorImagePicker -> TODO()
-            is ProfileAction.OnPictureSelected -> TODO()
             ProfileAction.OnToggleCurrentPasswordVisibility -> toggleCurrentPasswordVisibility()
             ProfileAction.OnToggleNewPasswordVisibility -> toggleNewPasswordVisibility()
-            ProfileAction.OnUploadPictureClick -> TODO()
-            is ProfileAction.OnUriSelected -> TODO()
+            else -> Unit
         }
     }
     

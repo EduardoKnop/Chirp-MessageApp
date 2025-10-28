@@ -1,6 +1,7 @@
 package com.plcoding.core.data.auth
 
 import com.plcoding.core.data.dto.AuthInfoSerializable
+import com.plcoding.core.data.dto.request.ChangePasswordRequest
 import com.plcoding.core.data.dto.request.EmailRequest
 import com.plcoding.core.data.dto.request.LoginRequest
 import com.plcoding.core.data.dto.request.RegisterRequest
@@ -81,6 +82,19 @@ class KtorAuthService(
                 newPassword = newPassword,
                 token = token,
             ),
+        )
+    }
+    
+    override suspend fun changePassword(
+        currentPassword: String,
+        newPassword: String
+    ): EmptyResult<DataError.Remote> {
+        return httpClient.post(
+            route = "/auth/change-password",
+            body = ChangePasswordRequest(
+                oldPassword = currentPassword,
+                newPassword = newPassword,
+            )
         )
     }
 }

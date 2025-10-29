@@ -7,6 +7,7 @@ import com.plcoding.chat.data.mappers.toDomain
 import com.plcoding.chat.domain.models.ChatParticipant
 import com.plcoding.chat.domain.models.ProfilePictureUploadUrls
 import com.plcoding.chat.domain.participant.ChatParticipantService
+import com.plcoding.core.data.networking.delete
 import com.plcoding.core.data.networking.get
 import com.plcoding.core.data.networking.post
 import com.plcoding.core.data.networking.safeCall
@@ -69,6 +70,12 @@ class KtorChatParticipantService(
         return httpClient.post<ConfirmProfilePictureRequest, Unit>(
             route = "/participants/confirm-profile-picture",
             body = ConfirmProfilePictureRequest(publicUrl),
+        )
+    }
+    
+    override suspend fun deleteProfilePicture(): EmptyResult<DataError.Remote> {
+        return httpClient.delete(
+            route = "/participants/profile-picture",
         )
     }
 }

@@ -73,7 +73,60 @@ class ProfileViewModel(
                 action.bytes,
                 action.mimeType
             )
+            ProfileAction.OnDeletePictureClick -> showDeleteConfirmation()
+            ProfileAction.OnDismissDeleteConfirmationDialogClick -> dismissDeleteConfirmation()
+            ProfileAction.OnConfirmDeletePictureClick -> deleteProfilePicture()
             else -> Unit
+        }
+    }
+    
+    private fun showDeleteConfirmation() {
+        _state.update {
+            it.copy(
+                showDeleteConfirmationDialog = true,
+            )
+        }
+    }
+    
+    private fun dismissDeleteConfirmation() {
+        _state.update {
+            it.copy(
+                showDeleteConfirmationDialog = false,
+            )
+        }
+    }
+    
+    private fun deleteProfilePicture() {
+        if (_state.value.isDeletingImage || state.value.profilePictureUrl == null) {
+            return
+        }
+        
+        _state.update {
+            it.copy(
+                isDeletingImage = true,
+                imageError = null,
+                showDeleteConfirmationDialog = false,
+            )
+        }
+        
+        viewModelScope.launch {
+            chatParticipantRepository
+                .deleteProfilePicture()
+                .onSuccess {
+                    _state.update {
+                        it.copy(
+                            isDeletingImage = false,
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            imageError = error.toUiText(),
+                            isDeletingImage = false,
+                        )
+                    }
+                }
         }
     }
     

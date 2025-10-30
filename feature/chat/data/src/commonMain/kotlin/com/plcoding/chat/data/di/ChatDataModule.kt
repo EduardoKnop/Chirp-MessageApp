@@ -9,6 +9,7 @@ import com.plcoding.chat.data.message.KtorChatMessageService
 import com.plcoding.chat.data.message.OfflineFirstMessageRepository
 import com.plcoding.chat.data.network.ConnectionRetryHandler
 import com.plcoding.chat.data.network.KtorWebSocketConnector
+import com.plcoding.chat.data.notification.KtorDeviceTokenService
 import com.plcoding.chat.data.participant.KtorChatParticipantService
 import com.plcoding.chat.data.participant.OfflineFirstChatParticipantRepository
 import com.plcoding.chat.database.DatabaseFactory
@@ -16,6 +17,7 @@ import com.plcoding.chat.domain.chat.ChatConnectionClient
 import com.plcoding.chat.domain.chat.ChatRepository
 import com.plcoding.chat.domain.chat.ChatService
 import com.plcoding.chat.domain.message.MessageRepository
+import com.plcoding.chat.domain.notification.DeviceTokenService
 import com.plcoding.chat.domain.participant.ChatParticipantRepository
 import com.plcoding.chat.domain.participant.ChatParticipantService
 import kotlinx.serialization.json.Json
@@ -38,6 +40,7 @@ val chatDataModule = module {
     singleOf(::KtorWebSocketConnector)
     singleOf(::KtorChatMessageService) bind ChatMessageService::class
     singleOf(::OfflineFirstChatParticipantRepository) bind ChatParticipantRepository::class
+    singleOf(::KtorDeviceTokenService) bind DeviceTokenService::class
     single {
         Json {
             ignoreUnknownKeys = true

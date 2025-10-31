@@ -10,6 +10,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="email_or_username">Email or Username</string>
     <string name="group_chat">Group chat</string>
+    <string name="only_you">Only you</string>
     <string name="chat_participant_you">You</string>
     <string name="logout">Logout</string>
     <string name="sending">Sending…</string>
